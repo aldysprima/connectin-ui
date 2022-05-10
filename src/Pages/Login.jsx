@@ -28,7 +28,7 @@ function Login() {
           Connect With Your friends has never been this easy
         </Typography>
       </Box>
-      <Box width={"50%"} height={"50vh"} direction="column" px={"100px"}>
+      <Box width={"50vw"} height={"50vh"} px={"100px"}>
         <Stack spacing={2}>
           <TextField
             id="outlined-basic"

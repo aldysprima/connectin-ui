@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+import Axios from "axios";
 import {
   Box,
   InputAdornment,
@@ -8,9 +9,43 @@ import {
   Button,
 } from "@mui/material";
 import { AccountCircle, Email, Lock } from "@mui/icons-material";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import background from "../assets/socmed1.png";
 
 function Register() {
+  const [loading, setLoading] = useState(false);
+  const emailRef = useRef("");
+  const usernameRef = useRef("");
+  const passwordRef = useRef("");
+  const confirmPasswordRef = useRef("");
+
+  const onClickRegister = () => {
+    const newUser = {
+      email: emailRef.current.value,
+      username: usernameRef.current.value,
+      password: passwordRef.current.value,
+      confirm_password: confirmPasswordRef.current.value,
+    };
+    setLoading(true);
+
+    Axios.post("http://localhost:4500/api/users/register", newUser)
+      .then((respond) => {
+        setLoading(false);
+        console.log(respond);
+        toast.info(
+          `Registration Succeed! Please Verify your Account within 2 minutes`
+        );
+        emailRef.current.value = "";
+        usernameRef.current.value = "";
+        passwordRef.current.value = "";
+        confirmPasswordRef.current.value = "";
+      })
+      .catch((error) => {
+        setLoading(false);
+        toast.error(error.response.data);
+      });
+  };
   return (
     <Box
       height="100vh"
@@ -53,25 +88,11 @@ function Register() {
 
           <Stack>
             <TextField
-              id="outlined-basic"
-              label="Email"
-              variant="outlined"
-              margin="dense"
-              type="email"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Email />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              id="outlined-basic"
               label="Username"
               variant="outlined"
               margin="dense"
               type="text"
+              inputRef={usernameRef}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -81,11 +102,25 @@ function Register() {
               }}
             />
             <TextField
-              id="outlined-basic"
+              label="Email"
+              variant="outlined"
+              margin="dense"
+              type="email"
+              inputRef={emailRef}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Email />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
               label="Password"
               variant="outlined"
               margin="dense"
               type="password"
+              inputRef={passwordRef}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -95,11 +130,11 @@ function Register() {
               }}
             />
             <TextField
-              id="outlined-basic"
               label="Confirm Password"
               variant="outlined"
               margin="dense"
               type="password"
+              inputRef={confirmPasswordRef}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -110,9 +145,16 @@ function Register() {
             />
           </Stack>
           <Stack direction="row" gap={5} sx={{ marginTop: "10px" }}>
-            <Button variant="contained">Register</Button>
+            <Button
+              onClick={onClickRegister}
+              variant="contained"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Register"}
+            </Button>
             <Button variant="outlined">Get Login</Button>
           </Stack>
+          <ToastContainer theme="colored" position="bottom-center" />
         </Box>
       </Stack>
     </Box>

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link as LinkTo } from "react-router-dom";
 import {
   Stack,
   Box,
@@ -31,17 +32,11 @@ function Login() {
       <Box width={"50vw"} height={"50vh"} px={"100px"}>
         <Stack spacing={2}>
           <TextField
-            id="outlined-basic"
             label="Username/Email"
             variant="outlined"
             margin={"normal"}
           />
-          <TextField
-            id="outlined-basic"
-            label="Password"
-            variant="outlined"
-            type={"password"}
-          />
+          <TextField label="Password" variant="outlined" type={"password"} />
           <Button
             variant="contained"
             sx={{
@@ -54,7 +49,14 @@ function Login() {
             Forgotten Password?
           </Link>
           <Divider />
-          <Button variant="outlined">Create New Account</Button>
+          <LinkTo to="/register" style={{ textDecoration: "none" }}>
+            <Button
+              sx={{ width: "100%", textDecoration: "none" }}
+              variant="outlined"
+            >
+              Create New Account
+            </Button>
+          </LinkTo>
         </Stack>
       </Box>
     </Stack>

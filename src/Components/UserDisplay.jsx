@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Avatar,
   Box,
@@ -11,7 +12,13 @@ import {
 import { Edit } from "@mui/icons-material";
 
 function UserDisplay(props) {
+  const [edit, setEdit] = useState(false);
   const isVerified = false;
+  const { username, email } = useSelector((state) => state);
+
+  const onBtnEdit = () => {
+    setEdit(true);
+  };
   return (
     <Box flex={4} p="50px">
       <Stack direction="row" justifyContent="space-between">
@@ -19,18 +26,21 @@ function UserDisplay(props) {
           <Avatar
             sx={{ width: "150px", height: "150px", marginBottom: "20px" }}
           />
-          <label htmlFor="contained-button-file">
-            <Input
-              accept="image/*"
-              id="contained-button-file"
-              multiple
-              type="file"
-              sx={{ marginBottom: "10px" }}
-            />
-            <Button variant="contained" component="span">
-              Upload
-            </Button>
-          </label>
+
+          {edit ? (
+            <label htmlFor="contained-button-file">
+              <Input
+                accept="image/*"
+                id="contained-button-file"
+                multiple
+                type="file"
+                sx={{ marginBottom: "10px" }}
+              />
+              <Button variant="contained" component="span">
+                Upload
+              </Button>
+            </label>
+          ) : null}
         </Box>
 
         <Stack>
@@ -56,7 +66,7 @@ function UserDisplay(props) {
             Username:
           </Typography>
           <Typography variant="p" color="#3498db">
-            {props.username}
+            {username}
           </Typography>
         </Stack>
         <Divider />
@@ -65,7 +75,7 @@ function UserDisplay(props) {
             Email:
           </Typography>
           <Typography variant="p" color="#3498db">
-            {props.email}
+            {email}
           </Typography>
         </Stack>
         <Divider />
@@ -87,7 +97,7 @@ function UserDisplay(props) {
           </Typography>
         </Stack>
       </Stack>
-      <Button variant="contained" startIcon={<Edit />}>
+      <Button onClick={onBtnEdit} variant="contained" startIcon={<Edit />}>
         Edit Profile
       </Button>
     </Box>

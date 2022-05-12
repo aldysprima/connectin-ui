@@ -20,6 +20,10 @@ const Reducer = (state = INITIAL_STATE, action) => {
       email: action.payload.email,
       isLoggedIn: true,
     };
+  } else if (action.type === "LOGOUT") {
+    return INITIAL_STATE;
+  } else {
+    return state;
   }
 };
 // 3. create global store

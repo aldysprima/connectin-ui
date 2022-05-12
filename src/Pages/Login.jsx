@@ -45,7 +45,11 @@ function Login() {
         toast.success("Login Success!");
         setLoading(false);
         console.log("HEADERS:", respond.headers);
+        console.log(respond.headers["auth-token"]);
         console.log("DATA :", respond.data);
+        const token = respond.headers["auth-token"].split(" ")[1];
+        localStorage.setItem("token", token);
+        console.log(token);
 
         // Reset Input Field
         user.current.value = "";

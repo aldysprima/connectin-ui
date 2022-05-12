@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import {
   AppBar,
   Avatar,
@@ -38,6 +39,8 @@ function Navbar() {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const divRef = useRef();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onOpen = () => {
     setOpen(true);
@@ -46,6 +49,13 @@ function Navbar() {
   const onClose = () => {
     setOpen(false);
     setAnchorEl(null);
+  };
+
+  const onBtnLogout = () => {
+    localStorage.removeItem("token");
+    dispatch({ type: "LOGOUT" });
+    navigate("/");
+    toast.success("Logout Success!");
   };
 
   return (
@@ -83,13 +93,16 @@ function Navbar() {
           horizontal: "right",
         }}
       >
-        <Link style={{ textDecoration: "none" }} to="/home">
+        <Link style={{ textDecoration: "none", color: "inherit" }} to="/home">
           <MenuItem>Home</MenuItem>
         </Link>
-        <Link style={{ textDecoration: "none" }} to="/profile">
+        <Link
+          style={{ textDecoration: "none", color: "inherit" }}
+          to="/profile"
+        >
           <MenuItem>Profile</MenuItem>
         </Link>
-        <MenuItem>Logout</MenuItem>
+        <MenuItem onClick={onBtnLogout}>Logout</MenuItem>
       </Menu>
     </AppBar>
   );

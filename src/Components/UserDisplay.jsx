@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 
-function UserDisplay() {
+function UserDisplay(props) {
   const isVerified = false;
   return (
     <Box flex={4} p="50px">
@@ -32,12 +32,7 @@ function UserDisplay() {
             </Button>
           </label>
         </Box>
-        <Box sx={{ marginLeft: "-800px" }}>
-          <Typography margin="25px 0" fontWeight="bold">
-            Aldy Septian Prima
-          </Typography>
-          <Typography>Bekasi, Indonesia</Typography>
-        </Box>
+
         <Stack>
           {isVerified ? (
             <Typography>Verified User</Typography>
@@ -46,18 +41,55 @@ function UserDisplay() {
           )}
         </Stack>
       </Stack>
-      <Stack spacing={2}>
-        <Typography variant="h6">Username</Typography>
+      <Stack spacing={2} my="30px">
+        <Stack maxWidth="50vw" direction="row" spacing="200px">
+          <Typography width="100px" variant="p">
+            Fullname:
+          </Typography>
+          <Typography variant="p" color="#3498db">
+            Your Full Name
+          </Typography>
+        </Stack>
         <Divider />
-        <Typography variant="h6">Bio</Typography>
+        <Stack maxWidth="50vw" direction="row" spacing="200px">
+          <Typography width="100px" variant="p">
+            Username:
+          </Typography>
+          <Typography variant="p" color="#3498db">
+            {props.username}
+          </Typography>
+        </Stack>
         <Divider />
-        <Typography variant="h6">Email</Typography>
+        <Stack maxWidth="50vw" direction="row" spacing="200px">
+          <Typography width="100px" variant="p">
+            Email:
+          </Typography>
+          <Typography variant="p" color="#3498db">
+            {props.email}
+          </Typography>
+        </Stack>
         <Divider />
-        <Typography variant="h6">Address</Typography>
-        <Button variant="contained" startIcon={<Edit />}>
-          Edit Profile
-        </Button>
+        <Stack maxWidth="50vw" direction="row" spacing="200px">
+          <Typography width="100px" variant="p">
+            Bio:
+          </Typography>
+          <Typography variant="p" color="#3498db">
+            This is my Bio
+          </Typography>
+        </Stack>
+        <Divider />
+        <Stack maxWidth="50vw" direction="row" spacing="200px">
+          <Typography width="100px" variant="p">
+            Address:
+          </Typography>
+          <Typography variant="p" color="#3498db">
+            This is my Bio
+          </Typography>
+        </Stack>
       </Stack>
+      <Button variant="contained" startIcon={<Edit />}>
+        Edit Profile
+      </Button>
     </Box>
   );
 }

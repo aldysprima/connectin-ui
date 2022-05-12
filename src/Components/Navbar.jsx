@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   AppBar,
@@ -35,12 +36,16 @@ const Icons = styled(Box)(({ theme }) => ({
 function Navbar() {
   const { username } = useSelector((state) => state);
   const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const divRef = useRef();
 
   const onOpen = () => {
     setOpen(true);
+    setAnchorEl(divRef.current);
   };
   const onClose = () => {
     setOpen(false);
+    setAnchorEl(null);
   };
 
   return (
@@ -60,7 +65,7 @@ function Navbar() {
           <Badge badgeContent={2} color="error">
             <Notifications />
           </Badge>
-          <Avatar sx={{ cursor: "pointer" }} onClick={onOpen} />
+          <Avatar sx={{ cursor: "pointer" }} onClick={onOpen} ref={divRef} />
         </Icons>
       </StyledToolbar>
       <Menu
@@ -68,6 +73,7 @@ function Navbar() {
         aria-labelledby="demo-positioned-button"
         open={open}
         onClose={onClose}
+        anchorEl={anchorEl}
         anchorOrigin={{
           vertical: "top",
           horizontal: "right",
@@ -77,8 +83,12 @@ function Navbar() {
           horizontal: "right",
         }}
       >
-        <MenuItem>Home</MenuItem>
-        <MenuItem>Profile</MenuItem>
+        <Link style={{ textDecoration: "none" }} to="/home">
+          <MenuItem>Home</MenuItem>
+        </Link>
+        <Link style={{ textDecoration: "none" }} to="/profile">
+          <MenuItem>Profile</MenuItem>
+        </Link>
         <MenuItem>Logout</MenuItem>
       </Menu>
     </AppBar>

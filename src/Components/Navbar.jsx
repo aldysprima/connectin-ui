@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import {
   AppBar,
   Avatar,
@@ -32,6 +33,7 @@ const Icons = styled(Box)(({ theme }) => ({
 }));
 
 function Navbar() {
+  const { username } = useSelector((state) => state);
   const [open, setOpen] = useState(false);
 
   const onOpen = () => {
@@ -47,6 +49,7 @@ function Navbar() {
         <Typography variant="h4" fontWeight="bold">
           Connect.In
         </Typography>
+        <Typography>Welcome {username}</Typography>
         <Search>
           <InputBase placeholder="Search..." />
         </Search>

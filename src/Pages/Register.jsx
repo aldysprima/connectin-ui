@@ -1,4 +1,6 @@
 import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import {
@@ -27,6 +29,13 @@ function Register() {
   const usernameRef = useRef("");
   const passwordRef = useRef("");
   const confirmPasswordRef = useRef("");
+  const navigate = useNavigate();
+  const { isLoggedIn } = useSelector((state) => state);
+  console.log(isLoggedIn);
+
+  if (isLoggedIn) {
+    navigate("/home");
+  }
 
   const showPassword = () => {
     if (!visible) {

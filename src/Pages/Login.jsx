@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link as LinkTo, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { toast } from "react-toastify";
@@ -21,6 +22,7 @@ function Login() {
   const user = useRef("");
   const password = useRef("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const showPassword = () => {
     if (!visible) {
@@ -42,19 +44,20 @@ function Login() {
       .then((respond) => {
         toast.success("Login Success!");
         setLoading(false);
-        console.log(respond.headers);
+        console.log("HEADERS:", respond.headers);
+        console.log("DATA :", respond.data);
 
         // Reset Input Field
         user.current.value = "";
         password.current.value = "";
         navigate("/home");
+        // dispatch action
+        dispatch({ type: "LOGIN", payload: respond.data });
       })
       .catch((error) => {
         setLoading(false);
         toast.error(error.response.data);
       });
-
-    console.log(loginCredential);
   };
 
   return (

@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import Axios from "axios";
 import {
   Box,
@@ -7,18 +8,33 @@ import {
   TextField,
   Typography,
   Button,
+  IconButton,
 } from "@mui/material";
-import { AccountCircle, Email, Lock } from "@mui/icons-material";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import {
+  AccountCircle,
+  Email,
+  Lock,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
+import { toast } from "react-toastify";
 import background from "../assets/socmed1.png";
 
 function Register() {
+  const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const emailRef = useRef("");
   const usernameRef = useRef("");
   const passwordRef = useRef("");
   const confirmPasswordRef = useRef("");
+
+  const showPassword = () => {
+    if (!visible) {
+      setVisible(true);
+    } else {
+      setVisible(false);
+    }
+  };
 
   const onClickRegister = () => {
     const newUser = {
@@ -29,9 +45,10 @@ function Register() {
     };
     setLoading(true);
 
-    Axios.post("http://localhost:4500/api/users/register", newUser)
+    Axios.post(process.env.REACT_APP_API + "/api/users/register", newUser)
       .then((respond) => {
         setLoading(false);
+        setVisible(false);
         console.log(respond);
         toast.info(
           `Registration Succeed! Please Verify your Account within 2 minutes`
@@ -119,12 +136,23 @@ function Register() {
               label="Password"
               variant="outlined"
               margin="dense"
-              type="password"
+              type={visible ? "text" : "password"}
               inputRef={passwordRef}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
                     <Lock />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      color="primary"
+                      size="large"
+                      onClick={showPassword}
+                    >
+                      {visible ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
                   </InputAdornment>
                 ),
               }}
@@ -133,12 +161,23 @@ function Register() {
               label="Confirm Password"
               variant="outlined"
               margin="dense"
-              type="password"
+              type={visible ? "text" : "password"}
               inputRef={confirmPasswordRef}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
                     <Lock />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      color="primary"
+                      size="large"
+                      onClick={showPassword}
+                    >
+                      {visible ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
                   </InputAdornment>
                 ),
               }}
@@ -152,9 +191,12 @@ function Register() {
             >
               {loading ? "Loading..." : "Register"}
             </Button>
-            <Button variant="outlined">Get Login</Button>
+            <Button variant="outlined">
+              <Link to="/" style={{ textDecoration: "none" }}>
+                Get Login
+              </Link>
+            </Button>
           </Stack>
-          <ToastContainer theme="colored" position="bottom-center" />
         </Box>
       </Stack>
     </Box>

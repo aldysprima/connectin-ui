@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useRef, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link as LinkTo, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { toast } from "react-toastify";
@@ -17,12 +17,19 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 function Login() {
+  const global = useSelector((state) => state);
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const user = useRef("");
   const password = useRef("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (global.username) {
+      navigate("/home");
+    }
+  });
 
   const showPassword = () => {
     if (!visible) {

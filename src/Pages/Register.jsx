@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -30,12 +30,13 @@ function Register() {
   const passwordRef = useRef("");
   const confirmPasswordRef = useRef("");
   const navigate = useNavigate();
-  const { isLoggedIn } = useSelector((state) => state);
-  console.log(isLoggedIn);
+  const global = useSelector((state) => state);
 
-  if (isLoggedIn) {
-    navigate("/home");
-  }
+  useEffect(() => {
+    if (global.username) {
+      navigate("/home");
+    }
+  });
 
   const showPassword = () => {
     if (!visible) {

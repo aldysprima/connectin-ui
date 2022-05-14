@@ -8,17 +8,22 @@ import App from "./App";
 
 // 1. Initialize value
 const INITIAL_STATE = {
+  uid: "",
   username: "",
   email: "",
-  isLoggedIn: false,
+  status: "",
+  fullname: "",
+  bio: "",
+  address: "",
+  profilepicture: "",
 };
 // 2. create reducer
 const Reducer = (state = INITIAL_STATE, action) => {
   if (action.type === "LOGIN") {
     return {
+      uid: action.payload.uid,
       username: action.payload.username,
       email: action.payload.email,
-      isLoggedIn: true,
     };
   } else if (action.type === "LOGOUT") {
     return INITIAL_STATE;

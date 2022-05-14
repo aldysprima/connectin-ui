@@ -6,7 +6,7 @@ import UserDisplay from "../Components/UserDisplay";
 
 function Profile() {
   return (
-    <Box bgcolor="#ecf0f1" height="100vh">
+    <Box bgcolor="#ecf0f1" height="750px">
       <Navbar />
       <Stack direction="row">
         <Sidebar />

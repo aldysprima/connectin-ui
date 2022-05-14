@@ -24,9 +24,23 @@ const Reducer = (state = INITIAL_STATE, action) => {
       uid: action.payload.uid,
       username: action.payload.username,
       email: action.payload.email,
+      status: action.payload.status,
+      fullname: action.payload.fullname,
+      bio: action.payload.bio,
+      address: action.payload.address,
+      profilepicture: action.payload.profilepicture,
     };
   } else if (action.type === "LOGOUT") {
     return INITIAL_STATE;
+  } else if (action.type === "UPDATEPROFILE") {
+    return {
+      ...state,
+      username: action.payload.username,
+      fullname: action.payload.fullname,
+      bio: action.payload.bio,
+      address: action.payload.address,
+      profilepicture: action.payload.profilepicture,
+    };
   } else {
     return state;
   }

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
-import { useSelector } from "react-redux";
+import Axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Avatar,
   Box,
@@ -11,15 +12,17 @@ import {
   Tooltip,
   IconButton,
 } from "@mui/material";
+import { toast } from "react-toastify";
 import { Cancel, Edit, Save, Verified } from "@mui/icons-material";
 import StyledModal from "./StyledModal";
 
 function UserDisplay() {
   const [edit, setEdit] = useState(false);
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const isVerified = true;
-  const { username, email } = useSelector((state) => state);
+  const { username, email, uid, fullname, bio, address, profilepicture } =
+    useSelector((state) => state);
+  const dispatch = useDispatch();
   // Ref to capture New Value When Edit Profile is clicked
   const fullnameRef = useRef();
   const userNameRef = useRef();
@@ -50,15 +53,37 @@ function UserDisplay() {
       bio: bioRef.current.value,
       address: addressRef.current.value,
     };
+
+    Axios.patch(
+      process.env.REACT_APP_API + "/api/users/updateprofile/" + uid,
+      newData
+    )
+      .then((respond) => {
+        console.log(respond.data);
+        toast.success("Update Data Success");
+
+        Axios.get(process.env.REACT_APP_API + "/api/users/getuserbyid/" + uid)
+          .then((respond2) => {
+            dispatch({ type: "UPDATEPROFILE", payload: respond2.data });
+          })
+          .catch((error) => {
+            toast.error(error.response.data);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.response.data);
+      });
+
     setOpen(false);
     setEdit(false);
-    console.log(newData);
+    console.log("NEWDATA :", newData);
 
     // Reset Refs Value
-    fullnameRef.current.value = "";
-    userNameRef.current.value = "";
-    bioRef.current.value = "";
-    addressRef.current.value = "";
+    fullnameRef.current.value = null;
+    userNameRef.current.value = null;
+    bioRef.current.value = null;
+    addressRef.current.value = null;
   };
 
   const onBtnCancelSave = () => {
@@ -112,10 +137,11 @@ function UserDisplay() {
               placeholder="Full Name"
               fullWidth={true}
               inputRef={fullnameRef}
+              defaultValue={fullname ? fullname : null}
             />
           ) : (
             <Typography variant="p" color="#3498db">
-              FullName
+              {fullname ? fullname : "Full Name"}
             </Typography>
           )}
         </Stack>
@@ -157,10 +183,11 @@ function UserDisplay() {
               placeholder="Enter Your Bio Here"
               fullWidth={true}
               inputRef={bioRef}
+              defaultValue={bio ? bio : null}
             />
           ) : (
             <Typography variant="p" color="#3498db">
-              This is my Bio
+              {bio ? bio : "Enter your bio"}
             </Typography>
           )}
         </Stack>
@@ -173,10 +200,11 @@ function UserDisplay() {
               placeholder="Enter Your Address Here"
               fullWidth={true}
               inputRef={addressRef}
+              defaultValue={address ? address : null}
             />
           ) : (
             <Typography variant="p" color="#3498db">
-              This is my Address
+              {address ? address : "Enter your Address"}
             </Typography>
           )}
         </Stack>

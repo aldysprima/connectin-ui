@@ -33,7 +33,9 @@ const StyledModal = (props) => {
             Are you sure want to update user data?
           </Typography>
           <ButtonGroup>
-            <Button onClick={props.onConfirm}>Confirm</Button>
+            <Button onClick={props.onConfirm}>
+              Confirm
+            </Button>
             <Button onClick={props.onCancelConfirm} color="error">
               Cancel
             </Button>

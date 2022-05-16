@@ -26,8 +26,10 @@ function Login() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (global.username) {
+    if (global.status === 1) {
       navigate("/home");
+    } else if (global.status === 0) {
+      navigate("/profile");
     }
   });
 
@@ -58,7 +60,7 @@ function Login() {
         // Reset Input Field
         user.current.value = "";
         password.current.value = "";
-        navigate("/home");
+
         // dispatch action
         dispatch({ type: "LOGIN", payload: respond.data });
       })

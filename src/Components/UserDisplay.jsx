@@ -19,9 +19,17 @@ import StyledModal from "./StyledModal";
 function UserDisplay() {
   const [edit, setEdit] = useState(false);
   const [open, setOpen] = useState(false);
-  const isVerified = true;
-  const { username, email, uid, fullname, bio, address, profilepicture } =
-    useSelector((state) => state);
+  const {
+    username,
+    email,
+    uid,
+    fullname,
+    bio,
+    address,
+    profilepicture,
+    status,
+  } = useSelector((state) => state);
+  const isVerified = status;
   const dispatch = useDispatch();
   // Ref to capture New Value When Edit Profile is clicked
   const fullnameRef = useRef();
@@ -224,7 +232,12 @@ function UserDisplay() {
           </Button>
         </ButtonGroup>
       ) : (
-        <Button onClick={onBtnEdit} variant="contained" startIcon={<Edit />}>
+        <Button
+          disabled={!Boolean(status)}
+          onClick={onBtnEdit}
+          variant="contained"
+          startIcon={<Edit />}
+        >
           Edit Profile
         </Button>
       )}

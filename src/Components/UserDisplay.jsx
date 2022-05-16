@@ -19,6 +19,7 @@ import StyledModal from "./StyledModal";
 function UserDisplay() {
   const [edit, setEdit] = useState(false);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const {
     username,
     email,
@@ -61,7 +62,6 @@ function UserDisplay() {
       bio: bioRef.current.value,
       address: addressRef.current.value,
     };
-
     Axios.patch(
       process.env.REACT_APP_API + "/api/users/updateprofile/" + uid,
       newData
@@ -82,16 +82,31 @@ function UserDisplay() {
         console.log(error);
         toast.error(error.response.data);
       });
-
     setOpen(false);
     setEdit(false);
     console.log("NEWDATA :", newData);
-
     // Reset Refs Value
     fullnameRef.current.value = null;
     userNameRef.current.value = null;
     bioRef.current.value = null;
     addressRef.current.value = null;
+  };
+
+  const onBtnResendToken = () => {
+    setLoading(true);
+    Axios.get(process.env.REACT_APP_API + "/api/auth/refresh-token", {
+      headers: {
+        UID: uid,
+      },
+    })
+      .then((respond) => {
+        setLoading(false);
+        toast.success(respond.data);
+      })
+      .catch((error) => {
+        setLoading(false);
+        toast.error(error.response.data);
+      });
   };
 
   const onBtnCancelSave = () => {
@@ -130,7 +145,13 @@ function UserDisplay() {
               </IconButton>
             </Tooltip>
           ) : (
-            <Button variant="contained">Resend Verification Email</Button>
+            <Button
+              variant="contained"
+              onClick={onBtnResendToken}
+              disabled={loading}
+            >
+              Resend Verification Email
+            </Button>
           )}
         </Stack>
       </Stack>

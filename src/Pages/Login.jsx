@@ -75,7 +75,6 @@ function Login() {
       width={"100vw"}
       height={"100vh"}
       direction={"row"}
-      // spacing={2}
       bgcolor="#ecf0f1"
       justifyContent="center"
       alignItems="center"
@@ -125,9 +124,11 @@ function Login() {
           >
             Log in
           </Button>
-          <Link component="button" underline="hover" fontSize={"17px"}>
-            Forgotten Password?
-          </Link>
+          <LinkTo to="/forget-password" style={{ textAlign: "center" }}>
+            <Link component="button" underline="hover" fontSize={"17px"}>
+              Forgotten Password?
+            </Link>
+          </LinkTo>
           <Divider />
           <LinkTo to="/register" style={{ textDecoration: "none" }}>
             <Button sx={{ width: "100%" }} variant="outlined">

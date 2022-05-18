@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Box,
   List,
@@ -24,22 +25,29 @@ function Sidebar() {
     <Box flex={1} p={2}>
       <Box position="fixed">
         <List>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="#home">
-              <ListItemIcon>
-                <Home />
-              </ListItemIcon>
-              <ListItemText primary="Homepage" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="#profile">
-              <ListItemIcon>
-                <AccountBox />
-              </ListItemIcon>
-              <ListItemText primary="Profile" />
-            </ListItemButton>
-          </ListItem>
+          <Link style={{ textDecoration: "none", color: "inherit" }} to="/home">
+            <ListItem disablePadding>
+              <ListItemButton component="a">
+                <ListItemIcon>
+                  <Home />
+                </ListItemIcon>
+                <ListItemText primary="Homepage" />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+          <Link
+            style={{ textDecoration: "none", color: "inherit" }}
+            to="/profile"
+          >
+            <ListItem disablePadding>
+              <ListItemButton component="a">
+                <ListItemIcon>
+                  <AccountBox />
+                </ListItemIcon>
+                <ListItemText primary="Profile" />
+              </ListItemButton>
+            </ListItem>
+          </Link>
           <ListItem disablePadding>
             <ListItemButton component="a" href="#home">
               <ListItemIcon>

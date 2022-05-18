@@ -35,7 +35,7 @@ const Icons = styled(Box)(({ theme }) => ({
 }));
 
 function Navbar() {
-  const { username } = useSelector((state) => state);
+  const { username, profilepicture } = useSelector((state) => state);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const divRef = useRef();
@@ -75,7 +75,12 @@ function Navbar() {
           <Badge badgeContent={2} color="error">
             <Notifications />
           </Badge>
-          <Avatar sx={{ cursor: "pointer" }} onClick={onOpen} ref={divRef} />
+          <Avatar
+            sx={{ cursor: "pointer" }}
+            onClick={onOpen}
+            ref={divRef}
+            src={process.env.REACT_APP_API + profilepicture}
+          />
         </Icons>
       </StyledToolbar>
       <Menu

@@ -18,8 +18,11 @@ import StyledModal from "./StyledModal";
 
 function UserDisplay() {
   const [edit, setEdit] = useState(false);
+  const [editPhoto, setEditPhoto] = useState(false);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [saveImage, setSaveImage] = useState(null);
+
   const {
     username,
     email,
@@ -39,6 +42,7 @@ function UserDisplay() {
   const addressRef = useRef();
 
   // Event Handler
+
   const onBtnEdit = () => {
     setEdit(true);
   };
@@ -55,6 +59,44 @@ function UserDisplay() {
     setOpen(false);
   };
 
+  // Event Handler Update Profile Picture
+  const onBtnChangePicture = () => {
+    setEditPhoto(true);
+  };
+
+  const onBtnCancelUpload = () => {
+    setEditPhoto(false);
+  };
+
+  function handleUploadChange(e) {
+    let uploaded = e.target.files[0];
+    setSaveImage(uploaded);
+  }
+
+  const onBtnUploadImage = () => {
+    let formData = new FormData();
+    formData.append("image", saveImage);
+
+    Axios.post(
+      process.env.REACT_APP_API + "/api/users/add-profile-picture/" + uid,
+      formData
+    )
+      .then((respond) => {
+        toast.success(respond.data);
+        Axios.get(process.env.REACT_APP_API + "/api/users/getuserbyid/" + uid)
+          .then((respond2) => {
+            dispatch({ type: "UPDATEPROFILE", payload: respond2.data });
+            console.log("RESPOND DATA : ", respond2.data);
+          })
+          .catch((error) => {
+            toast.error(error.response.data);
+          });
+      })
+      .catch((error) => {
+        toast.error(error.response.data);
+      });
+    setEditPhoto(false);
+  };
   const onBtnConfirmSave = () => {
     const newData = {
       fullname: fullnameRef.current.value,
@@ -118,23 +160,41 @@ function UserDisplay() {
       <Stack direction="row" justifyContent="space-between">
         <Box>
           <Avatar
+            src={process.env.REACT_APP_API + profilepicture}
             sx={{ width: "150px", height: "150px", marginBottom: "20px" }}
           />
 
-          {edit ? (
-            <label htmlFor="contained-button-file">
+          {editPhoto ? (
+            <div>
               <Input
+                onChange={handleUploadChange}
                 accept="image/*"
-                id="contained-button-file"
+                id="formFile"
                 multiple
                 type="file"
                 sx={{ marginBottom: "10px" }}
               />
-              <Button variant="contained" component="span">
+              <Button
+                onClick={onBtnUploadImage}
+                variant="contained"
+                component="span"
+              >
                 Upload
               </Button>
-            </label>
-          ) : null}
+              <Button
+                sx={{ marginLeft: "25px" }}
+                onClick={onBtnCancelUpload}
+                variant="contained"
+                component="span"
+              >
+                Cancel
+              </Button>
+            </div>
+          ) : (
+            <Button onClick={onBtnChangePicture} disabled={!Boolean(status)}>
+              Change Profile Picture
+            </Button>
+          )}
         </Box>
 
         <Stack>
